@@ -1,6 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Composition</string>
+    <string name="app_name">Сумма числа</string>
     <string name="rules_of_game">Правила игры: перед Вами будет три фигуры, две снизу и одна сверху. Ваша задача выбрать число, чтобы сумма чисел двух нижних фигур была равна верхней.</string>
     <string name="example_of_game">Например: в верхней фигуре чило 7, а в одной из нижних число 4, значит на месте вопросительного знака должно стоять число 3.</string>
     <string name="understand">Понятно</string>
+
 </resources>
