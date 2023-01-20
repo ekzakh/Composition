@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="margin_large">24dp</dimen>
     <dimen name="margin_normal">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+    <dimen name="margin_extra_large">36dp</dimen>
     <dimen name="normal_text_size">16dp</dimen>
     <dimen name="large_text_size">24dp</dimen>
+    <dimen name="result_image_size">160dp</dimen>
 </resources>
