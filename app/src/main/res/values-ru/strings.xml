@@ -9,5 +9,6 @@
     <string name="easy_test">Лёгкий</string>
     <string name="normal_test">Нормальный</string>
     <string name="hard_test">Сложный</string>
+    <string name="count_right_answers">Правильных ответов: %d (минимум %d)</string>
 
 </resources>
