@@ -3,18 +3,20 @@ package com.ekzak.composition.presentation
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.ekzak.composition.R
 import com.ekzak.composition.databinding.FragmentGameBinding
 import com.ekzak.composition.domain.entity.GameLevel
 import com.ekzak.composition.domain.entity.GameResult
-import com.ekzak.composition.domain.entity.GameSettings
 
 class GameFragment : Fragment(R.layout.fragment_game) {
 
     private lateinit var level: GameLevel
     private val binding by viewBinding(FragmentGameBinding::bind)
+    private lateinit var viewModel: GameViewModel
+    private val optionsViewList = mutableListOf<TextView>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,20 +25,64 @@ class GameFragment : Fragment(R.layout.fragment_game) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tvSum.setOnClickListener {
-            launchResulScreen(GameResult(
-                winner = true,
-                countOfRightAnswers = 5,
-                countOfQuestions = 10,
-                gameSettings = GameSettings(
-                    maxSumValue = 20,
-                    minCountOfRightAnswers = 8,
-                    minPercentOfRightAnswers = 8,
-                    gameTimeInSeconds = 10)
-            ))
+        viewModel = GameViewModelFactory(level).create(GameViewModel::class.java)
+        addOptionsToList()
+        setObservers()
+        setOptionsListeners()
+        viewModel.generateQuestion()
+    }
+
+    private fun addOptionsToList() {
+        with(binding) {
+            optionsViewList.add(option1)
+            optionsViewList.add(option2)
+            optionsViewList.add(option3)
+            optionsViewList.add(option4)
+            optionsViewList.add(option5)
+            optionsViewList.add(option6)
         }
     }
 
+    private fun setObservers() {
+        viewModel.observeGameTime(viewLifecycleOwner) { binding.tvTime.text = it }
+        viewModel.observeResultGame(viewLifecycleOwner) { launchResulScreen(it) }
+        viewModel.observeProgressGame(viewLifecycleOwner) {
+            binding.progressBar.progress = it
+        }
+        viewModel.observeAnswer(viewLifecycleOwner) { isRight ->
+            if (isRight) {
+                viewModel.generateQuestion()
+            } else {
+                //todo make animation wrong answer
+            }
+        }
+        viewModel.observeQuestion(viewLifecycleOwner) { question ->
+            with(binding) {
+                tvSum.text = question.sum.toString()
+                tvVisibleNumber.text = question.visibleNumber.toString()
+                optionsViewList.forEachIndexed { index, optionView ->
+                    optionView.text = question.options[index].toString()
+                }
+            }
+        }
+        viewModel.observeMinRightAnswersSetting(viewLifecycleOwner) { minCountRightAnswers ->
+            binding.tvMinRightAnswers.text = resources.getString(R.string.min_right_answers, minCountRightAnswers)
+        }
+        viewModel.observeCountRightAnswer(viewLifecycleOwner) { countRightAnswers ->
+            binding.tvCountRightAnswers.text = resources.getString(R.string.count_right_answers, countRightAnswers)
+        }
+    }
+
+    private fun setOptionsListeners() {
+        with(binding) {
+            option1.setOnClickListener { viewModel.checkAnswer(option1.text.toString()) }
+            option2.setOnClickListener { viewModel.checkAnswer(option2.text.toString()) }
+            option3.setOnClickListener { viewModel.checkAnswer(option3.text.toString()) }
+            option4.setOnClickListener { viewModel.checkAnswer(option4.text.toString()) }
+            option5.setOnClickListener { viewModel.checkAnswer(option5.text.toString()) }
+            option6.setOnClickListener { viewModel.checkAnswer(option6.text.toString()) }
+        }
+    }
 
     private fun launchResulScreen(result: GameResult) {
         requireActivity().supportFragmentManager.beginTransaction()

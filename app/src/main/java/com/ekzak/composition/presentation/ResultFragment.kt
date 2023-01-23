@@ -42,7 +42,8 @@ class ResultFragment : Fragment(R.layout.fragment_result) {
             tvRequiredPercentAnswers.text =
                 resources.getString(R.string.required_percent_answers, gameResult.gameSettings.minPercentOfRightAnswers)
             tvCorrectAnswers.text = resources.getString(R.string.correct_answers, gameResult.countOfRightAnswers)
-            tvPercent.text = resources.getString(R.string.correct_answers, 100) //TODO set correct value
+            tvPercent.text = resources.getString(R.string.correct_answers,
+                (gameResult.countOfRightAnswers.toDouble() / gameResult.countOfQuestions * 100).toInt())
         }
     }
 
