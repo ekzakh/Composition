@@ -47,8 +47,8 @@ class GameFragment : Fragment(R.layout.fragment_game) {
 
     private fun parseArgs() {
         level = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            requireArguments().getSerializable(KEY_LEVEL, GameLevel::class.java)!!
-        else @Suppress("DEPRECATION") requireArguments().getSerializable(KEY_LEVEL) as GameLevel
+            requireArguments().getParcelable(KEY_LEVEL, GameLevel::class.java)!!
+        else @Suppress("DEPRECATION") requireArguments().getParcelable<GameLevel>(KEY_LEVEL) as GameLevel
     }
 
     companion object {
@@ -58,7 +58,7 @@ class GameFragment : Fragment(R.layout.fragment_game) {
         fun newInstance(level: GameLevel): GameFragment {
             return GameFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(KEY_LEVEL, level)
+                    putParcelable(KEY_LEVEL, level)
                 }
             }
         }

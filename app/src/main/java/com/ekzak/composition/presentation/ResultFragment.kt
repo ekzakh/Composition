@@ -29,8 +29,8 @@ class ResultFragment : Fragment(R.layout.fragment_result) {
 
     private fun parseArgs() {
         gameResult = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            requireArguments().getSerializable(RESULT_KEY, GameResult::class.java)!!
-        else @Suppress("DEPRECATION") requireArguments().getSerializable(RESULT_KEY) as GameResult
+            requireArguments().getParcelable(RESULT_KEY, GameResult::class.java)!!
+        else @Suppress("DEPRECATION") requireArguments().getParcelable<GameResult>(RESULT_KEY) as GameResult
     }
 
     private fun showGameResult() {
@@ -65,7 +65,7 @@ class ResultFragment : Fragment(R.layout.fragment_result) {
         fun newInstance(gameResult: GameResult): ResultFragment {
             return ResultFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(RESULT_KEY, gameResult)
+                    putParcelable(RESULT_KEY, gameResult)
                 }
             }
         }
