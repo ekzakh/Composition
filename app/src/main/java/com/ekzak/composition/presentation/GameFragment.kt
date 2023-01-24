@@ -15,8 +15,20 @@ class GameFragment : Fragment(R.layout.fragment_game) {
 
     private lateinit var level: GameLevel
     private val binding by viewBinding(FragmentGameBinding::bind)
-    private lateinit var viewModel: GameViewModel
-    private val optionsViewList = mutableListOf<TextView>()
+
+    private val viewModel by lazy {
+        GameViewModelFactory(level).create(GameViewModel::class.java)
+    }
+    private val tvOptions by lazy {
+        mutableListOf<TextView>().apply {
+            add(binding.option1)
+            add(binding.option2)
+            add(binding.option3)
+            add(binding.option4)
+            add(binding.option5)
+            add(binding.option6)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,22 +37,9 @@ class GameFragment : Fragment(R.layout.fragment_game) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = GameViewModelFactory(level).create(GameViewModel::class.java)
-        addOptionsToList()
         setObservers()
         setOptionsListeners()
         viewModel.generateQuestion()
-    }
-
-    private fun addOptionsToList() {
-        with(binding) {
-            optionsViewList.add(option1)
-            optionsViewList.add(option2)
-            optionsViewList.add(option3)
-            optionsViewList.add(option4)
-            optionsViewList.add(option5)
-            optionsViewList.add(option6)
-        }
     }
 
     private fun setObservers() {
@@ -60,7 +59,7 @@ class GameFragment : Fragment(R.layout.fragment_game) {
             with(binding) {
                 tvSum.text = question.sum.toString()
                 tvVisibleNumber.text = question.visibleNumber.toString()
-                optionsViewList.forEachIndexed { index, optionView ->
+                tvOptions.forEachIndexed { index, optionView ->
                     optionView.text = question.options[index].toString()
                 }
             }
@@ -110,3 +109,4 @@ class GameFragment : Fragment(R.layout.fragment_game) {
         }
     }
 }
+

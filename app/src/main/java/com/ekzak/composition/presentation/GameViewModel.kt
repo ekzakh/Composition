@@ -18,10 +18,11 @@ class GameViewModel(gameLevel: GameLevel) : ViewModel() {
     private val repository = GameRepositoryImp
     private val getGameSettingUseCase = GetGameSettingsUseCase(repository)
     private val generateQuestionUseCase = GenerateQuestionUseCase(repository)
-
     private var gameSettings: GameSettings = getGameSettingUseCase.invoke(gameLevel)
 
-    private val timerString = MutableLiveData<String>()
+    private lateinit var timer: CountDownTimer
+
+    private val timeString = MutableLiveData<String>()
     private val progress = MutableLiveData<Int>()
     private val minCountRightAnswers = MutableLiveData<Int>()
     private val question = MutableLiveData<Question>()
@@ -31,26 +32,11 @@ class GameViewModel(gameLevel: GameLevel) : ViewModel() {
     private var totalQuestions = 0
 
     init {
-        timerString.value = parseTime(gameSettings.gameTimeInSeconds)
+        timeString.value = parseTime(gameSettings.gameTimeInSeconds)
         progress.value = 0
         countRightAnswers.value = 0
         minCountRightAnswers.value = gameSettings.minCountOfRightAnswers
-
-        object : CountDownTimer(gameSettings.gameTimeInSeconds * MS_IN_ONE_SEC, MS_IN_ONE_SEC) {
-            override fun onTick(millisUntilFinished: Long) {
-                timerString.value = parseTime((millisUntilFinished / MS_IN_ONE_SEC).toInt())
-            }
-
-            override fun onFinish() {
-                val isWinner = checkWinner()
-                resultGame.value = GameResult(
-                    isWinner,
-                    countRightAnswers.value!!,
-                    totalQuestions,
-                    gameSettings
-                )
-            }
-        }.start()
+        startTimer()
     }
 
     fun generateQuestion() {
@@ -70,7 +56,7 @@ class GameViewModel(gameLevel: GameLevel) : ViewModel() {
     }
 
     fun observeGameTime(owner: LifecycleOwner, observer: Observer<String>) {
-        timerString.observe(owner, observer)
+        timeString.observe(owner, observer)
     }
 
     fun observeResultGame(owner: LifecycleOwner, observer: Observer<GameResult>) {
@@ -97,6 +83,25 @@ class GameViewModel(gameLevel: GameLevel) : ViewModel() {
         minCountRightAnswers.observe(owner, observer)
     }
 
+    private fun startTimer() {
+        timer = object : CountDownTimer(gameSettings.gameTimeInSeconds * MS_IN_ONE_SEC, MS_IN_ONE_SEC) {
+            override fun onTick(millisUntilFinished: Long) {
+                timeString.value = parseTime((millisUntilFinished / MS_IN_ONE_SEC).toInt())
+            }
+
+            override fun onFinish() {
+                val isWinner = checkWinner()
+                resultGame.value = GameResult(
+                    isWinner,
+                    countRightAnswers.value!!,
+                    totalQuestions,
+                    gameSettings
+                )
+            }
+        }
+        timer.start()
+    }
+
     private fun calculateProgress() {
         countRightAnswers.value?.let { countRightAnswers ->
             progress.value = (countRightAnswers.toDouble() / gameSettings.minCountOfRightAnswers * 100).toInt()
@@ -104,13 +109,18 @@ class GameViewModel(gameLevel: GameLevel) : ViewModel() {
     }
 
     private fun checkWinner(): Boolean {
-        val rightPercentAnswers = (countRightAnswers.value!!.toDouble() / totalQuestions * 100).toInt()
+        val rightPercentAnswers = (countRightAnswers.value!!/ totalQuestions.toDouble()  * 100).toInt()
         return countRightAnswers.value!! >= gameSettings.minCountOfRightAnswers &&
                 rightPercentAnswers >= gameSettings.minPercentOfRightAnswers
     }
 
     private fun parseTime(timeInSeconds: Int): String {
-        return String.format("%2d:%2d", timeInSeconds / SEC_IN_ONE_MIN, timeInSeconds % SEC_IN_ONE_MIN)
+        return String.format("%02d:%02d", timeInSeconds / SEC_IN_ONE_MIN, timeInSeconds % SEC_IN_ONE_MIN)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        timer.cancel()
     }
 
     companion object {
