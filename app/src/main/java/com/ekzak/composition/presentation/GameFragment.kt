@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.ekzak.composition.R
@@ -17,7 +18,7 @@ class GameFragment : Fragment(R.layout.fragment_game) {
     private val binding by viewBinding(FragmentGameBinding::bind)
 
     private val viewModel by lazy {
-        GameViewModelFactory(level).create(GameViewModel::class.java)
+        GameViewModelFactory(ResourcesManagerImp(requireContext())).create(GameViewModel::class.java)
     }
     private val tvOptions by lazy {
         mutableListOf<TextView>().apply {
@@ -37,23 +38,18 @@ class GameFragment : Fragment(R.layout.fragment_game) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (savedInstanceState == null) {
+            viewModel.startGame(gameLevel = level)
+        }
         setObservers()
         setOptionsListeners()
-        viewModel.generateQuestion()
     }
 
     private fun setObservers() {
         viewModel.observeGameTime(viewLifecycleOwner) { binding.tvTime.text = it }
         viewModel.observeResultGame(viewLifecycleOwner) { launchResulScreen(it) }
-        viewModel.observeProgressGame(viewLifecycleOwner) {
+        viewModel.observeProgressPercent(viewLifecycleOwner) {
             binding.progressBar.progress = it
-        }
-        viewModel.observeAnswer(viewLifecycleOwner) { isRight ->
-            if (isRight) {
-                viewModel.generateQuestion()
-            } else {
-                //todo make animation wrong answer
-            }
         }
         viewModel.observeQuestion(viewLifecycleOwner) { question ->
             with(binding) {
@@ -64,12 +60,20 @@ class GameFragment : Fragment(R.layout.fragment_game) {
                 }
             }
         }
-        viewModel.observeMinRightAnswersSetting(viewLifecycleOwner) { minCountRightAnswers ->
-            binding.tvMinRightAnswers.text = resources.getString(R.string.min_right_answers, minCountRightAnswers)
+        viewModel.observeEnoughPercent(viewLifecycleOwner) { isDone ->
+            binding.progressBar.setIndicatorColor(getColorByState(isDone))
         }
-        viewModel.observeCountRightAnswer(viewLifecycleOwner) { countRightAnswers ->
-            binding.tvCountRightAnswers.text = resources.getString(R.string.count_right_answers, countRightAnswers)
+        viewModel.observeEnoughCount(viewLifecycleOwner) { isDone ->
+            binding.tvProgressAnswers.setTextColor(getColorByState(isDone))
         }
+        viewModel.observeProgressAnswers(viewLifecycleOwner) { progressText ->
+            binding.tvProgressAnswers.text = progressText
+        }
+    }
+
+    private fun getColorByState(isDone: Boolean): Int {
+        val color = if (isDone) android.R.color.holo_green_light else android.R.color.holo_red_light
+        return ContextCompat.getColor(requireContext(), color)
     }
 
     private fun setOptionsListeners() {

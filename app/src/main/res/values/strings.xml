@@ -8,8 +8,7 @@
     <string name="easy_test">Easy</string>
     <string name="normal_test">Normal</string>
     <string name="hard_test">Hard</string>
-    <string name="count_right_answers">Correct answers: %d </string>
-    <string name="min_right_answers">(min %d)</string>
+    <string name="progress_answers">Correct answers: %d (min %d)</string>
     <string name="smile">Smile</string>
     <string name="required_correct_answers">Correct answers required %d</string>
     <string name="correct_answers">Your score %d</string>

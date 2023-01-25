@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_normal"
         android:padding="@dimen/margin_normal"
-        app:layout_constraintBottom_toTopOf="@+id/tvCountRightAnswers"
+        app:layout_constraintBottom_toTopOf="@+id/tvProgressAnswers"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/tvQuestionNumber"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -59,26 +59,15 @@
         tools:text=" ?" />
 
     <TextView
-        android:id="@+id/tvCountRightAnswers"
+        android:id="@+id/tvProgressAnswers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal"
         android:layout_marginEnd="@dimen/margin_normal"
         android:layout_marginBottom="@dimen/margin_normal"
-        android:text="@string/count_right_answers"
         app:layout_constraintBottom_toTopOf="@id/progressBar"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/tvMinRightAnswers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_normal"
-        android:layout_marginEnd="@dimen/margin_normal"
-        android:layout_marginBottom="@dimen/margin_normal"
-        android:text="@string/min_right_answers"
-        app:layout_constraintBottom_toTopOf="@id/progressBar"
-        app:layout_constraintStart_toEndOf="@id/tvCountRightAnswers" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/progress_answers" />
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
