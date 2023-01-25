@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Сумма числа</string>
+    <string name="rules_of_game">Правила игры: перед Вами будет три фигуры, две снизу и одна сверху. Ваша задача выбрать число, чтобы сумма чисел двух нижних фигур была равна верхней.</string>
+    <string name="example_of_game">Например: в верхней фигуре чило 7, а в одной из нижних число 4, значит на месте вопросительного знака должно стоять число 3.</string>
+    <string name="understand">Понятно</string>
+    <string name="choose_level">Выберите уровень</string>
+    <string name="level_test">Тестовый</string>
+    <string name="easy_test">Лёгкий</string>
+    <string name="normal_test">Нормальный</string>
+    <string name="hard_test">Сложный</string>
+    <string name="progress_answers">Правильных ответов: %d (минимум %d)</string>
+    <string name="smile">Смайлик</string>
+    <string name="required_correct_answers">Необходимое количество правильных ответов %d</string>
+    <string name="correct_answers">Ваш счет %d</string>
+    <string name="required_percent_answers">Необходимый процент правильных ответов %d</string>
+    <string name="percent_correct_answers">Процент правильных ответов %d</string>
+    <string name="try_again">Попробовать снова</string>
+
+</resources>

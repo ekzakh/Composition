@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Composition</string>
+    <string name="rules_of_game">Правила игры: перед Вами будет три фигуры, две снизу и одна сверху. Ваша задача выбрать число, чтобы сумма чисел двух нижних фигур была равна верхней.</string>
+    <string name="example_of_game">Например: в верхней фигуре чило 7, а в одной из нижних число 4, значит на месте вопросительного знака должно стоять число 3.</string>
+    <string name="understand">Understand</string>
+    <string name="choose_level">Choose level</string>
+    <string name="level_test">Test</string>
+    <string name="easy_test">Easy</string>
+    <string name="normal_test">Normal</string>
+    <string name="hard_test">Hard</string>
+    <string name="progress_answers">Correct answers: %d (min %d)</string>
+    <string name="smile">Smile</string>
+    <string name="required_correct_answers">Correct answers required %d</string>
+    <string name="correct_answers">Your score %d</string>
+    <string name="required_percent_answers">Correct answers percent required %d</string>
+    <string name="percent_correct_answers">Percentage of correct answers %d</string>
+    <string name="try_again">Try again</string>
 </resources>
