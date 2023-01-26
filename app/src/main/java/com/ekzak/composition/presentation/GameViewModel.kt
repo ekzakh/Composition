@@ -14,13 +14,16 @@ import com.ekzak.composition.domain.entity.Question
 import com.ekzak.composition.domain.usecases.GenerateQuestionUseCase
 import com.ekzak.composition.domain.usecases.GetGameSettingsUseCase
 
-class GameViewModel(private val resourceManager: ResourcesManager) : ViewModel() {
+class GameViewModel(
+    private val resourceManager: ResourcesManager,
+    level: GameLevel,
+    ) : ViewModel() {
 
     private val repository = GameRepositoryImp
     private val getGameSettingUseCase = GetGameSettingsUseCase(repository)
     private val generateQuestionUseCase = GenerateQuestionUseCase(repository)
 
-    private lateinit var gameSettings: GameSettings
+    private var gameSettings: GameSettings
     private val formattedTime = MutableLiveData<String>()
     private val progressPercent = MutableLiveData<Int>()
     private val enoughCount = MutableLiveData<Boolean>()
@@ -35,8 +38,8 @@ class GameViewModel(private val resourceManager: ResourcesManager) : ViewModel()
     private var countRightAnswers = 0
     private var totalQuestions = 0
 
-    fun startGame(gameLevel: GameLevel) {
-        gameSettings = getGameSettingUseCase.invoke(gameLevel)
+    init {
+        gameSettings = getGameSettingUseCase.invoke(level)
         minPercent.value = gameSettings.minPercentOfRightAnswers
         minCount.value = gameSettings.minCountOfRightAnswers
         if (timer == null) {
