@@ -1,24 +1,24 @@
 package com.ekzak.composition.presentation
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.ekzak.composition.R
 import com.ekzak.composition.databinding.FragmentGameBinding
-import com.ekzak.composition.domain.entity.GameLevel
 import com.ekzak.composition.domain.entity.GameResult
 
 class GameFragment : Fragment(R.layout.fragment_game) {
 
-    private lateinit var level: GameLevel
+    private val args by navArgs<GameFragmentArgs>()
     private val binding by viewBinding(FragmentGameBinding::bind)
 
     private val viewModel by lazy {
-        GameViewModelFactory(ResourcesManagerImp(requireContext()), level).create(GameViewModel::class.java)
+        GameViewModelFactory(ResourcesManagerImp(requireContext()), args.level).create(GameViewModel::class.java)
     }
     private val tvOptions by lazy {
         mutableListOf<TextView>().apply {
@@ -29,11 +29,6 @@ class GameFragment : Fragment(R.layout.fragment_game) {
             add(binding.option5)
             add(binding.option6)
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        parseArgs()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -85,29 +80,7 @@ class GameFragment : Fragment(R.layout.fragment_game) {
     }
 
     private fun launchResulScreen(result: GameResult) {
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.container, ResultFragment.newInstance(result))
-            .addToBackStack(null)
-            .commit()
-    }
-
-    private fun parseArgs() {
-        level = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            requireArguments().getParcelable(KEY_LEVEL, GameLevel::class.java)!!
-        else @Suppress("DEPRECATION") requireArguments().getParcelable<GameLevel>(KEY_LEVEL) as GameLevel
-    }
-
-    companion object {
-        private const val KEY_LEVEL = "level"
-        const val NAME = "game"
-
-        fun newInstance(level: GameLevel): GameFragment {
-            return GameFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_LEVEL, level)
-                }
-            }
-        }
+        findNavController().navigate(GameFragmentDirections.actionGameFragmentToResultFragment(result))
     }
 }
 

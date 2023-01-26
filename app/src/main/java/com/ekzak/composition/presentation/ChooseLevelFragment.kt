@@ -3,6 +3,7 @@ package com.ekzak.composition.presentation
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.ekzak.composition.R
 import com.ekzak.composition.databinding.FragmentChooseLevelBinding
@@ -23,14 +24,8 @@ class ChooseLevelFragment : Fragment(R.layout.fragment_choose_level) {
     }
 
     private fun launchGameScreen(level: GameLevel) {
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.container, GameFragment.newInstance(level))
-            .addToBackStack(GameFragment.NAME)
-            .commit()
-    }
-
-    companion object {
-        const val NAME = "choose_level"
-        fun newInstance(): ChooseLevelFragment = ChooseLevelFragment()
+        findNavController().navigate(
+            ChooseLevelFragmentDirections.actionChooseLevelFragmentToGameFragment(level)
+        )
     }
 }

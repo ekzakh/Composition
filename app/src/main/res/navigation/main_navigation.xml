@@ -9,20 +9,42 @@
         android:id="@+id/welcomeFragment"
         android:name="com.ekzak.composition.presentation.WelcomeFragment"
         android:label="WelcomeFragment"
-        tools:layout="@layout/fragment_welcome" />
+        tools:layout="@layout/fragment_welcome" >
+        <action
+            android:id="@+id/action_welcomeFragment_to_chooseLevelFragment"
+            app:destination="@id/chooseLevelFragment" />
+    </fragment>
     <fragment
         android:id="@+id/chooseLevelFragment"
         android:name="com.ekzak.composition.presentation.ChooseLevelFragment"
         android:label="ChooseLevelFragment"
-        tools:layout="@layout/fragment_choose_level" />
+        tools:layout="@layout/fragment_choose_level" >
+        <action
+            android:id="@+id/action_chooseLevelFragment_to_gameFragment"
+            app:destination="@id/gameFragment"
+            app:launchSingleTop="false" />
+    </fragment>
     <fragment
         android:id="@+id/gameFragment"
         android:name="com.ekzak.composition.presentation.GameFragment"
         android:label="GameFragment"
-        tools:layout="@layout/fragment_game" />
+        tools:layout="@layout/fragment_game" >
+        <action
+            android:id="@+id/action_gameFragment_to_resultFragment"
+            app:destination="@id/resultFragment"
+            app:popUpTo="@id/gameFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="level"
+            app:argType="com.ekzak.composition.domain.entity.GameLevel" />
+    </fragment>
     <fragment
         android:id="@+id/resultFragment"
         android:name="com.ekzak.composition.presentation.ResultFragment"
         android:label="ResultFragment"
-        tools:layout="@layout/fragment_result" />
+        tools:layout="@layout/fragment_result" >
+        <argument
+            android:name="result"
+            app:argType="com.ekzak.composition.domain.entity.GameResult" />
+    </fragment>
 </navigation>
