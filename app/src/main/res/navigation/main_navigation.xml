@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/welcomeFragment">
+
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.ekzak.composition.presentation.WelcomeFragment"
+        android:label="WelcomeFragment"
+        tools:layout="@layout/fragment_welcome" />
+    <fragment
+        android:id="@+id/chooseLevelFragment"
+        android:name="com.ekzak.composition.presentation.ChooseLevelFragment"
+        android:label="ChooseLevelFragment"
+        tools:layout="@layout/fragment_choose_level" />
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="com.ekzak.composition.presentation.GameFragment"
+        android:label="GameFragment"
+        tools:layout="@layout/fragment_game" />
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.ekzak.composition.presentation.ResultFragment"
+        android:label="ResultFragment"
+        tools:layout="@layout/fragment_result" />
+</navigation>
