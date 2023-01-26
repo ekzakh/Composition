@@ -18,7 +18,7 @@ class GameFragment : Fragment(R.layout.fragment_game) {
     private val binding by viewBinding(FragmentGameBinding::bind)
 
     private val viewModel by lazy {
-        GameViewModelFactory(ResourcesManagerImp(requireContext())).create(GameViewModel::class.java)
+        GameViewModelFactory(ResourcesManagerImp(requireContext()), level).create(GameViewModel::class.java)
     }
     private val tvOptions by lazy {
         mutableListOf<TextView>().apply {
@@ -38,9 +38,6 @@ class GameFragment : Fragment(R.layout.fragment_game) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (savedInstanceState == null) {
-            viewModel.startGame(gameLevel = level)
-        }
         setObservers()
         setOptionsListeners()
     }
